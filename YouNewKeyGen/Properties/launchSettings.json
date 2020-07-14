@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "YouNewKeyGen": {
+      "commandName": "Project",
+      "commandLineArgs": "-n mac -p abcd1234 -o local.pfx"
+    }
+  }
+}
