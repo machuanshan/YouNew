@@ -80,6 +80,8 @@ namespace YouNewThis
                     checkCertificateRevocation: false);
 
                 await StreamPipe.DuplexPipe(stream1, stream2);
+
+                _logger.LogInformation("Connection closed");
             }
             catch (Exception e)
             {

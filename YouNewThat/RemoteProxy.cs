@@ -88,6 +88,8 @@ namespace YouNewThat
                 await client2.ConnectAsync(header.Host, header.Port);
                 var stream2 = client2.GetStream();
                 await StreamPipe.DuplexPipe(stream1, stream2);
+
+                _logger.LogInformation("Connection closed");
             }
             catch (Exception e)
             {
