@@ -21,6 +21,8 @@ namespace YouNewThat
         private readonly IConfiguration _configuration;
         private readonly ILogger<RemoteProxy> _logger;
         private X509Certificate2 _serverCertificate;
+        private int _totalConnectionCount = 0;
+        private int _activeConnectionCount = 0;
 
         public RemoteProxy(IConfiguration configuration, ILogger<RemoteProxy> logger)
         {
@@ -65,6 +67,11 @@ namespace YouNewThat
 
             try
             {
+                var totalConnectionCount = Interlocked.Increment(ref _totalConnectionCount);
+                var activeConnectionCount = Interlocked.Increment(ref _activeConnectionCount);
+                _logger.LogInformation($"Creating connection: {totalConnectionCount}");
+                _logger.LogInformation($"Active connections: {_activeConnectionCount}");
+
                 stream1 = new SslStream(
                 innerStream: client1.GetStream(),
                 leaveInnerStreamOpen: false,
@@ -87,7 +94,10 @@ namespace YouNewThat
                 _logger.LogInformation($"Connecting to {header.Host}:{header.Port}");
                 await client2.ConnectAsync(header.Host, header.Port);
                 var stream2 = client2.GetStream();
-                await StreamPipe.DuplexPipe(stream1, stream2);
+
+                var upPumpSize = _configuration.GetValue("upPumpSize", 16384);
+                var downPumpSize = _configuration.GetValue("downPumpSize", 65536);
+                await StreamPipe.DuplexPipe(stream1, stream2, upPumpSize, downPumpSize);
 
                 _logger.LogInformation("Connection closed");
             }
@@ -97,6 +107,7 @@ namespace YouNewThat
             }
             finally
             {
+                Interlocked.Decrement(ref _activeConnectionCount);
                 try { stream1?.Close(); } catch { }
                 try { client1.Close(); } catch { }
                 try { client2.Close(); } catch { }

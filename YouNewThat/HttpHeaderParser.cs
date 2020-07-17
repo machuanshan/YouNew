@@ -12,7 +12,6 @@ namespace YouNewThat
         public bool IsHttps { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
-        public string HeaderString { get; set; }
     }
 
     public class HttpHeaderParser
@@ -58,10 +57,6 @@ namespace YouNewThat
                 header.Port = header.IsHttps ? 443 : 80;
             }
 
-            var strBuilder = new StringBuilder();
-            lines.ForEach(l => strBuilder.AppendLine(l));
-            strBuilder.AppendLine();
-            header.HeaderString = strBuilder.ToString();
             return header;
         }
     }

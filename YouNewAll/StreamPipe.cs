@@ -23,11 +23,11 @@ namespace YouNewAll
             }
         }
 
-        public static async Task DuplexPipe(Stream stream1, Stream stream2, int upBufferSize = 1024 * 16, int downBufferSize = 1024 * 1024)
+        public static async Task DuplexPipe(Stream stream1, Stream stream2, int upPumpSize = 1024 * 16, int downPumpSize = 1024 * 1024)
         {
             await Task.WhenAny(
-                    Pipe(stream1, stream2, upBufferSize),
-                    Pipe(stream2, stream1, downBufferSize));
+                    Pipe(stream1, stream2, upPumpSize),
+                    Pipe(stream2, stream1, downPumpSize));
         }
     }
 }
