@@ -18,14 +18,17 @@ namespace YouNewThat
 {
     internal class RemoteProxy : BackgroundService
     {
+        private readonly Metrics _metrics;
         private readonly IConfiguration _configuration;
         private readonly ILogger<RemoteProxy> _logger;
         private X509Certificate2 _serverCertificate;
-        private int _totalConnectionCount = 0;
-        private int _activeConnectionCount = 0;
-
-        public RemoteProxy(IConfiguration configuration, ILogger<RemoteProxy> logger)
+        
+        public RemoteProxy(
+            Metrics metrics,
+            IConfiguration configuration, 
+            ILogger<RemoteProxy> logger)
         {
+            _metrics = metrics;
             _configuration = configuration;
             _logger = logger;
         }
@@ -67,10 +70,7 @@ namespace YouNewThat
 
             try
             {
-                var totalConnectionCount = Interlocked.Increment(ref _totalConnectionCount);
-                var activeConnectionCount = Interlocked.Increment(ref _activeConnectionCount);
-                _logger.LogInformation($"Creating connection: {totalConnectionCount}");
-                _logger.LogInformation($"Active connections: {_activeConnectionCount}");
+                _metrics.ConnectionCreated();
 
                 stream1 = new SslStream(
                 innerStream: client1.GetStream(),
@@ -94,12 +94,7 @@ namespace YouNewThat
                 _logger.LogInformation($"Connecting to {header.Host}:{header.Port}");
                 await client2.ConnectAsync(header.Host, header.Port);
                 var stream2 = client2.GetStream();
-
-                var upPumpSize = _configuration.GetValue("upPumpSize", 16384);
-                var downPumpSize = _configuration.GetValue("downPumpSize", 65536);
-                await StreamPipe.DuplexPipe(stream1, stream2, upPumpSize, downPumpSize);
-
-                _logger.LogInformation("Connection closed");
+                await StreamPipe.DuplexPipe(stream1, stream2);
             }
             catch (Exception e)
             {
@@ -107,7 +102,7 @@ namespace YouNewThat
             }
             finally
             {
-                Interlocked.Decrement(ref _activeConnectionCount);
+                _metrics.ConnectionClosed();
                 try { stream1?.Close(); } catch { }
                 try { client1.Close(); } catch { }
                 try { client2.Close(); } catch { }
