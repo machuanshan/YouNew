@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -33,8 +34,18 @@ namespace YouNewThis
         {
             try
             {
-                var pwd = _configuration.GetValue<string>("keyPassword");
-                _clientCertificate = new X509Certificate2("local.pfx", pwd);
+                var pwd = _configuration.GetValue<string>("keyPassword") ?? string.Empty;
+                var pfxFile = "local.pfx";
+
+                if (!File.Exists(pfxFile))
+                {
+                    _clientCertificate = CertificateUtils.CreateSelfSignedCertificate(Environment.MachineName, pwd, pfxFile);
+                    _logger.LogInformation($"Thumbprint: {_clientCertificate.Thumbprint}");
+                    _logger.LogInformation("Add to server's allow list first and then restart client.");
+                    return;
+                }
+
+                _clientCertificate = new X509Certificate2(pfxFile, pwd);
                 _logger.LogInformation($"Client certificate thumbprint: {_clientCertificate.Thumbprint}");
 
                 var port = _configuration.GetValue("localPort", 5000);

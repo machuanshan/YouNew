@@ -37,8 +37,11 @@ namespace YouNewThat
         {
             try
             {
-                var pwd = _configuration.GetValue<string>("keyPassword");
-                _serverCertificate = new X509Certificate2("server.pfx", pwd);
+                var pwd = _configuration.GetValue<string>("keyPassword") ?? string.Empty;
+                var pfxName = "server.pfx";
+                _serverCertificate = File.Exists(pfxName) ?
+                    new X509Certificate2(pfxName, pwd) :
+                    CertificateUtils.CreateSelfSignedCertificate(Environment.MachineName, pwd, pfxName);
 
                 var port = _configuration.GetValue("port", 5001);
                 var server = new TcpListener(IPAddress.Any, port);
@@ -84,16 +87,20 @@ namespace YouNewThat
 
                 var header = await HttpHeaderParser.Parse(stream1);
 
-                if (!header.IsHttps)
+                if (header.IsHttps)
                 {
-                    _logger.LogInformation($"Insecured http request is not supported: {header.Host}");
-                    return;
+                    SendProxyOK(stream1);                    
                 }
 
-                SendProxyOK(stream1);
                 _logger.LogInformation($"Connecting to {header.Host}:{header.Port}");
                 await client2.ConnectAsync(header.Host, header.Port);
                 var stream2 = client2.GetStream();
+
+                if(!header.IsHttps)
+                {
+                    await stream2.WriteAsync(header.HeaderData);
+                }
+
                 await StreamPipe.DuplexPipe(stream1, stream2);
             }
             catch (Exception e)
