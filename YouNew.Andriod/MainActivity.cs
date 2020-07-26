@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
+using Android.Content.PM;
 
 namespace YouNew.Andriod
 {
@@ -22,10 +23,10 @@ namespace YouNew.Andriod
 
         private void OnStartProxyButtonClicked(object sender, System.EventArgs e)
         {
-            
+
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 

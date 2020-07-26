@@ -90,19 +90,19 @@ namespace YouNew.Andriod
 			global::Xamarin.Essentials.Resource.Drawable.notification_template_icon_low_bg = global::YouNew.Andriod.Resource.Drawable.notification_template_icon_low_bg;
 			global::Xamarin.Essentials.Resource.Drawable.notification_tile_bg = global::YouNew.Andriod.Resource.Drawable.notification_tile_bg;
 			global::Xamarin.Essentials.Resource.Drawable.notify_panel_notification_icon_bg = global::YouNew.Andriod.Resource.Drawable.notify_panel_notification_icon_bg;
+			global::Xamarin.Essentials.Resource.Id.actions = global::YouNew.Andriod.Resource.Id.actions;
 			global::Xamarin.Essentials.Resource.Id.action_container = global::YouNew.Andriod.Resource.Id.action_container;
 			global::Xamarin.Essentials.Resource.Id.action_divider = global::YouNew.Andriod.Resource.Id.action_divider;
 			global::Xamarin.Essentials.Resource.Id.action_image = global::YouNew.Andriod.Resource.Id.action_image;
 			global::Xamarin.Essentials.Resource.Id.action_text = global::YouNew.Andriod.Resource.Id.action_text;
-			global::Xamarin.Essentials.Resource.Id.actions = global::YouNew.Andriod.Resource.Id.actions;
 			global::Xamarin.Essentials.Resource.Id.all = global::YouNew.Andriod.Resource.Id.all;
 			global::Xamarin.Essentials.Resource.Id.async = global::YouNew.Andriod.Resource.Id.async;
 			global::Xamarin.Essentials.Resource.Id.blocking = global::YouNew.Andriod.Resource.Id.blocking;
 			global::Xamarin.Essentials.Resource.Id.bottom = global::YouNew.Andriod.Resource.Id.bottom;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_header_text = global::YouNew.Andriod.Resource.Id.browser_actions_header_text;
+			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_items = global::YouNew.Andriod.Resource.Id.browser_actions_menu_items;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_item_icon = global::YouNew.Andriod.Resource.Id.browser_actions_menu_item_icon;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_item_text = global::YouNew.Andriod.Resource.Id.browser_actions_menu_item_text;
-			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_items = global::YouNew.Andriod.Resource.Id.browser_actions_menu_items;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_view = global::YouNew.Andriod.Resource.Id.browser_actions_menu_view;
 			global::Xamarin.Essentials.Resource.Id.center = global::YouNew.Andriod.Resource.Id.center;
 			global::Xamarin.Essentials.Resource.Id.center_horizontal = global::YouNew.Andriod.Resource.Id.center_horizontal;
@@ -157,14 +157,12 @@ namespace YouNew.Andriod
 			global::Xamarin.Essentials.Resource.Style.Widget_Compat_NotificationActionContainer = global::YouNew.Andriod.Resource.Style.Widget_Compat_NotificationActionContainer;
 			global::Xamarin.Essentials.Resource.Style.Widget_Compat_NotificationActionText = global::YouNew.Andriod.Resource.Style.Widget_Compat_NotificationActionText;
 			global::Xamarin.Essentials.Resource.Style.Widget_Support_CoordinatorLayout = global::YouNew.Andriod.Resource.Style.Widget_Support_CoordinatorLayout;
-			global::Xamarin.Essentials.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::YouNew.Andriod.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem = global::YouNew.Andriod.Resource.Styleable.ColorStateListItem;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_alpha = global::YouNew.Andriod.Resource.Styleable.ColorStateListItem_alpha;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_android_alpha = global::YouNew.Andriod.Resource.Styleable.ColorStateListItem_android_alpha;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_android_color = global::YouNew.Andriod.Resource.Styleable.ColorStateListItem_android_color;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_keylines = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_keylines;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_Layout;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor;
@@ -173,13 +171,8 @@ namespace YouNew.Andriod
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
 			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
+			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::YouNew.Andriod.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamily = global::YouNew.Andriod.Resource.Styleable.FontFamily;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderAuthority = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderAuthority;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderCerts = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderCerts;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderPackage = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderPackage;
-			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderQuery = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont = global::YouNew.Andriod.Resource.Styleable.FontFamilyFont;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_android_font = global::YouNew.Andriod.Resource.Styleable.FontFamilyFont_android_font;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_android_fontStyle = global::YouNew.Andriod.Resource.Styleable.FontFamilyFont_android_fontStyle;
@@ -191,7 +184,16 @@ namespace YouNew.Andriod
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_fontVariationSettings = global::YouNew.Andriod.Resource.Styleable.FontFamilyFont_fontVariationSettings;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_fontWeight = global::YouNew.Andriod.Resource.Styleable.FontFamilyFont_fontWeight;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_ttcIndex = global::YouNew.Andriod.Resource.Styleable.FontFamilyFont_ttcIndex;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderAuthority = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderAuthority;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderCerts = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderCerts;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderPackage = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderPackage;
+			global::Xamarin.Essentials.Resource.Styleable.FontFamily_fontProviderQuery = global::YouNew.Andriod.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor = global::YouNew.Andriod.Resource.Styleable.GradientColor;
+			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem = global::YouNew.Andriod.Resource.Styleable.GradientColorItem;
+			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_color = global::YouNew.Andriod.Resource.Styleable.GradientColorItem_android_color;
+			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_offset = global::YouNew.Andriod.Resource.Styleable.GradientColorItem_android_offset;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_centerColor = global::YouNew.Andriod.Resource.Styleable.GradientColor_android_centerColor;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_centerX = global::YouNew.Andriod.Resource.Styleable.GradientColor_android_centerX;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_centerY = global::YouNew.Andriod.Resource.Styleable.GradientColor_android_centerY;
@@ -204,9 +206,7 @@ namespace YouNew.Andriod
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_startY = global::YouNew.Andriod.Resource.Styleable.GradientColor_android_startY;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_tileMode = global::YouNew.Andriod.Resource.Styleable.GradientColor_android_tileMode;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_type = global::YouNew.Andriod.Resource.Styleable.GradientColor_android_type;
-			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem = global::YouNew.Andriod.Resource.Styleable.GradientColorItem;
-			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_color = global::YouNew.Andriod.Resource.Styleable.GradientColorItem_android_color;
-			global::Xamarin.Essentials.Resource.Styleable.GradientColorItem_android_offset = global::YouNew.Andriod.Resource.Styleable.GradientColorItem_android_offset;
+			global::Xamarin.Essentials.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::YouNew.Andriod.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 		}
 		
 		public partial class Animation
