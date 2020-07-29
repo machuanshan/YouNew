@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -11,8 +15,11 @@ using YouNewAll;
 
 namespace YouNew.Android
 {
-    internal class LocalProxy
+    [Service]
+    internal class LocalProxy : Service
     {
+        public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;
+
         private readonly Metrics _metrics;
         private X509Certificate2 _clientCertificate;
         
@@ -20,6 +27,24 @@ namespace YouNew.Android
             Metrics metrics)
         {
             _metrics = metrics;
+        }
+
+        [return: GeneratedEnum]
+        public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
+        {
+            
+
+            var notification = new Notification.Builder(this, typeof(LocalProxy).FullName)
+                .SetContentTitle(Resources.GetString(Andriod.Resource.String.))
+        .SetContentText(Resources.GetString(Resource.String.notification_text))
+        .SetSmallIcon(Resource.Drawable.)
+        .SetContentIntent(BuildIntentToShowMainActivity())
+        .SetOngoing(true)
+        .AddAction(BuildRestartTimerAction())
+        .AddAction(BuildStopServiceAction())
+        .Build();
+
+            return base.OnStartCommand(intent, flags, startId);
         }
 
         public async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,7 +56,7 @@ namespace YouNew.Android
 
                 if (!File.Exists(pfxFile))
                 {
-                    _clientCertificate = CertificateUtils.CreateSelfSignedCertificate(Environment.MachineName, pwd, pfxFile);                    
+                    _clientCertificate = CertificateUtils.CreateSelfSignedCertificate(System.Environment.MachineName, pwd, pfxFile);                    
                     return;
                 }
 
@@ -57,6 +82,11 @@ namespace YouNew.Android
             {
                 //_logger.LogError(e, "Error occurred on servicing");
             }
+        }
+
+        public override IBinder OnBind(Intent intent)
+        {
+            throw new NotImplementedException();
         }
 
         private async void ProcessClientRequest(TcpClient client1)
