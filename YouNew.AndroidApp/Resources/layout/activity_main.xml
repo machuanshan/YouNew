@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:width="300px"
+        android:width="400px"
+        android:height="100px"
         android:layout_gravity="center_horizontal"
         android:id="@+id/startProxy" />
     <Button
@@ -20,7 +21,8 @@
         android:layout_height="wrap_content"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:width="300px"
+        android:width="400px"
+        android:height="100px"
         android:layout_gravity="center_horizontal"
         android:id="@+id/stopProxy"/>
 </LinearLayout>

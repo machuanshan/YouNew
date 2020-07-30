@@ -16,7 +16,7 @@ using YouNewAll;
 
 namespace YouNew.AndroidApp
 {
-    [Service]
+    [Service(Name = Constants.LocalProxyServiceName)]
     internal class LocalProxy : Service
     {
         public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;

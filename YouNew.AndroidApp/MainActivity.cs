@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Widget;
 using Android.Content;
 using System;
+using System.Collections.Generic;
 
 namespace YouNew.AndroidApp
 {
@@ -14,6 +15,9 @@ namespace YouNew.AndroidApp
         MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        private Button _startButton;
+        private Button _stopButton;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             CreateNotificationChannel();
@@ -22,10 +26,45 @@ namespace YouNew.AndroidApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            var startButton = FindViewById<Button>(Resource.Id.startProxy);
-            startButton.Click += OnStartProxyButtonClicked;
-            var stopButton = FindViewById<Button>(Resource.Id.stopProxy);
-            stopButton.Click += OnStopProxyButtonClicked;
+            _startButton = FindViewById<Button>(Resource.Id.startProxy);
+            _startButton.Click += OnStartProxyButtonClicked;
+            _stopButton = FindViewById<Button>(Resource.Id.stopProxy);
+            _stopButton.Click += OnStopProxyButtonClicked;
+
+            var isRunning = IsLocalProxyRunning();
+            SetIsServiceRunning(isRunning);
+        }
+
+        private void SetIsServiceRunning(bool isRunning)
+        {
+            if (isRunning)
+            {
+                _startButton.Visibility = Android.Views.ViewStates.Gone;
+                _stopButton.Visibility = Android.Views.ViewStates.Visible;
+            }
+            else
+            {
+                _startButton.Visibility = Android.Views.ViewStates.Visible;
+                _stopButton.Visibility = Android.Views.ViewStates.Gone;
+            }
+        }
+
+        private bool IsLocalProxyRunning()
+        {
+            var activityManager = (ActivityManager)GetSystemService(ActivityService);
+#pragma warning disable CS0618 // Type or member is obsolete
+            var serviceInfoList = activityManager.GetRunningServices(50);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            foreach (var runningServiceInfo in serviceInfoList)
+            {
+                if (runningServiceInfo.Service.ClassName == Constants.LocalProxyServiceName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void OnStopProxyButtonClicked(object sender, EventArgs e)
@@ -41,6 +80,8 @@ namespace YouNew.AndroidApp
             {
                 StartService(intent);
             }
+
+            SetIsServiceRunning(false);
         }
 
         private void OnStartProxyButtonClicked(object sender, EventArgs e)
@@ -55,6 +96,8 @@ namespace YouNew.AndroidApp
             {
                 StartService(intent);
             }
+
+            SetIsServiceRunning(true);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
