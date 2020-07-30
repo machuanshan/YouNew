@@ -26,38 +26,44 @@ namespace YouNew.AndroidApp
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            var notification = new Notification.Builder(this, Constants.NotificationChannelId)
-                .SetContentTitle(Resources.GetString(Resource.String.proxy_notification_title))
-                .SetSmallIcon(Resource.Drawable.ic_noti)
-                // .SetContentIntent(BuildIntentToShowMainActivity())
-                // user cannot dismiss the notification
-                .SetOngoing(true)
-                //.AddAction(BuildRestartTimerAction())
-                //.AddAction(BuildStopServiceAction())
-                .Build();
+            if (intent.GetStringExtra(Constants.ServiceAction) == Constants.StopService)
+            {
+                StopForeground(true);
+                StopSelf(SERVICE_RUNNING_NOTIFICATION_ID);
+            }
+            else
+            {
+                var notification = new Notification.Builder(this, Constants.NotificationChannelId)
+                    .SetContentTitle(Resources.GetString(Resource.String.proxy_notification_title))
+                    .SetSmallIcon(Resource.Drawable.ic_noti)
+                    .SetContentIntent(BuildIntentToShowMainActivity())
+                    // user cannot dismiss the notification
+                    .SetOngoing(true)
+                    .AddAction(BuildStopServiceAction())
+                    .Build();
 
-            // Enlist this instance of the service as a foreground service
-            StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
+                // Enlist this instance of the service as a foreground service
+                StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
+            }
 
             return base.OnStartCommand(intent, flags, startId);
         }
 
-        //private Notification.Action BuildRestartTimerAction()
-        //{
-        //    var intent = new Intent()
-        //    var pendingIntent = PendingIntent.
-        //    return new Notification.Action()
-        //}
+        private Notification.Action BuildStopServiceAction()
+        {
+            var intent = new Intent(this, GetType());
+            intent.PutExtra(Constants.ServiceAction, Constants.StopService);
+            var pendingIntent = PendingIntent.GetForegroundService(this, 0, intent, PendingIntentFlags.OneShot);
+            
+            return new Notification.Action(Resource.Drawable.ic_stop_proxy, Resources.GetString(Resource.String.stop_proxy), pendingIntent);
+        }
 
         private PendingIntent BuildIntentToShowMainActivity()
         {
             var intent = new Intent(this, typeof(MainActivity));
-            var pendingIntent = PendingIntent.GetActivity(
-                context: this, 
-                requestCode: 0, 
-                intent: intent, 
-                flags: PendingIntentFlags.OneShot);
-            return pendingIntent;
+            // Start new or bring the existing to current
+            intent.SetFlags(ActivityFlags.NewTask);
+            return PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.UpdateCurrent);
         }
 
         public async Task ExecuteAsync(CancellationToken stoppingToken)

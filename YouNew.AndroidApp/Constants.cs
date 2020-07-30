@@ -15,5 +15,7 @@ namespace YouNew.AndroidApp
     internal static class Constants
     {
         public const string NotificationChannelId = "YouNew.General";
+        public const string ServiceAction = "ServiceAction";
+        public const string StopService = "StopService";
     }
 }
