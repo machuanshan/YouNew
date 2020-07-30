@@ -75,17 +75,15 @@ namespace YouNew.AndroidApp
         {
             try
             {
-                var pwd = Preferences.Get("keyPassword", string.Empty);
+                var pwd = Preferences.Get(Constants.CertPasswordKey, string.Empty);
                 var pfxFile = Path.Combine(FileSystem.AppDataDirectory, "local.pfx");
 
                 if (!File.Exists(pfxFile))
                 {
-                    _clientCertificate = CertificateUtils.CreateSelfSignedCertificate(System.Environment.MachineName, pwd, pfxFile);                    
                     return;
                 }
 
-                var contents = File.ReadAllBytes(pfxFile);
-                _clientCertificate = new X509Certificate2(contents, pwd);
+                _clientCertificate = new X509Certificate2(pfxFile, pwd);
                 
                 var port = Preferences.Get("localPort", 5000);
                 var localServer = new TcpListener(IPAddress.Any, port);
