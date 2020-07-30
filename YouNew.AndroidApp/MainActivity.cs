@@ -4,6 +4,7 @@ using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
 using Android.Content;
+using System;
 
 namespace YouNew.AndroidApp
 {
@@ -23,9 +24,26 @@ namespace YouNew.AndroidApp
 
             var startButton = FindViewById<Button>(Resource.Id.startProxy);
             startButton.Click += OnStartProxyButtonClicked;
+            var stopButton = FindViewById<Button>(Resource.Id.stopProxy);
+            stopButton.Click += OnStopProxyButtonClicked;
         }
 
-        private void OnStartProxyButtonClicked(object sender, System.EventArgs e)
+        private void OnStopProxyButtonClicked(object sender, EventArgs e)
+        {
+            var intent = new Intent(this, typeof(LocalProxy));
+            intent.PutExtra(Constants.ServiceAction, Constants.StopService);
+            
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                StartForegroundService(intent);
+            }
+            else
+            {
+                StartService(intent);
+            }
+        }
+
+        private void OnStartProxyButtonClicked(object sender, EventArgs e)
         {
             var intent = new Intent(this, typeof(LocalProxy));
 
@@ -58,7 +76,7 @@ namespace YouNew.AndroidApp
 
             var notificationChannel = new NotificationChannel(
                 Constants.NotificationChannelId,
-                Resources.GetString(Resource.String.notification_channel_name),
+                base.Resources.GetString(Resource.String.notification_channel_name),
                 NotificationImportance.Default);
             var notificationManager = (NotificationManager)GetSystemService(NotificationService);
             notificationManager.CreateNotificationChannel(notificationChannel);

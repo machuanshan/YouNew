@@ -1,14 +1,26 @@
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <Button
         android:text="@string/start_proxy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="25px"
         android:minHeight="25px"
+        android:width="300px"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/startProxy" />
-</RelativeLayout>
+    <Button
+        android:text="@string/stop_proxy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:width="300px"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/stopProxy"/>
+</LinearLayout>

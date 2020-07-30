@@ -53,6 +53,9 @@ namespace YouNew.AndroidApp
         {
             var intent = new Intent(this, GetType());
             intent.PutExtra(Constants.ServiceAction, Constants.StopService);
+
+            // PendingIntent is for notification system to use the inner Intent object on behalf of owner application of the Intent
+            // this pendingIntent object can only be used once, so we set it with OneShot flag
             var pendingIntent = PendingIntent.GetForegroundService(this, 0, intent, PendingIntentFlags.OneShot);
             
             return new Notification.Action(Resource.Drawable.ic_stop_proxy, Resources.GetString(Resource.String.stop_proxy), pendingIntent);
@@ -63,6 +66,8 @@ namespace YouNew.AndroidApp
             var intent = new Intent(this, typeof(MainActivity));
             // Start new or bring the existing to current
             intent.SetFlags(ActivityFlags.NewTask);
+
+            // this PendingIntent can be used multiple times to bring up main activity
             return PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.UpdateCurrent);
         }
 
