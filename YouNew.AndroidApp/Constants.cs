@@ -18,5 +18,6 @@ namespace YouNew.AndroidApp
         public const string ServiceAction = "ServiceAction";
         public const string StopService = "StopService";
         public const string LocalProxyServiceName = "YouNew.LocalProxy";
+        public const string ServerSettingKey = "server";
     }
 }

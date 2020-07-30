@@ -5,7 +5,6 @@ using Android.Runtime;
 using Android.Widget;
 using Android.Content;
 using System;
-using System.Collections.Generic;
 
 namespace YouNew.AndroidApp
 {
@@ -17,6 +16,7 @@ namespace YouNew.AndroidApp
     {
         private Button _startButton;
         private Button _stopButton;
+        private EditText _txtServer;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -26,6 +26,8 @@ namespace YouNew.AndroidApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
+            _txtServer = FindViewById<EditText>(Resource.Id.txtServer);
+            _txtServer.Text = Xamarin.Essentials.Preferences.Get(Constants.ServerSettingKey, string.Empty);
             _startButton = FindViewById<Button>(Resource.Id.startProxy);
             _startButton.Click += OnStartProxyButtonClicked;
             _stopButton = FindViewById<Button>(Resource.Id.stopProxy);
@@ -86,6 +88,14 @@ namespace YouNew.AndroidApp
 
         private void OnStartProxyButtonClicked(object sender, EventArgs e)
         {
+            if(string.IsNullOrWhiteSpace(_txtServer.Text))
+            {
+                Toast.MakeText(this, Resource.String.server_required, ToastLength.Short).Show();
+                return;
+            }
+
+            Xamarin.Essentials.Preferences.Set(Constants.ServerSettingKey, _txtServer.Text.Trim());
+
             var intent = new Intent(this, typeof(LocalProxy));
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)

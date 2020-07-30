@@ -122,7 +122,7 @@ namespace YouNew.AndroidApp
             try
             {
                 var stream1 = client1.GetStream();
-                var server = Preferences.Get("server", string.Empty);
+                var server = Preferences.Get(Constants.ServerSettingKey, string.Empty);
                 var port = Preferences.Get("serverPort", 5001);
 
                 await client2.ConnectAsync(server, port);

@@ -3775,28 +3775,31 @@ namespace YouNew.AndroidApp
 			public const int transition_transform = 2131230903;
 			
 			// aapt resource value: 0x7F0800B8
-			public const int uniform = 2131230904;
+			public const int txtServer = 2131230904;
 			
 			// aapt resource value: 0x7F0800B9
-			public const int unlabeled = 2131230905;
+			public const int uniform = 2131230905;
 			
 			// aapt resource value: 0x7F0800BA
-			public const int up = 2131230906;
+			public const int unlabeled = 2131230906;
 			
 			// aapt resource value: 0x7F0800BB
-			public const int useLogo = 2131230907;
+			public const int up = 2131230907;
 			
 			// aapt resource value: 0x7F0800BC
-			public const int view_offset_helper = 2131230908;
+			public const int useLogo = 2131230908;
 			
 			// aapt resource value: 0x7F0800BD
-			public const int visible = 2131230909;
+			public const int view_offset_helper = 2131230909;
 			
 			// aapt resource value: 0x7F0800BE
-			public const int withText = 2131230910;
+			public const int visible = 2131230910;
 			
 			// aapt resource value: 0x7F0800BF
-			public const int wrap_content = 2131230911;
+			public const int withText = 2131230911;
+			
+			// aapt resource value: 0x7F0800C0
+			public const int wrap_content = 2131230912;
 			
 			static Id()
 			{
@@ -4239,40 +4242,46 @@ namespace YouNew.AndroidApp
 			public const int hide_bottom_view_on_scroll_behavior = 2131558447;
 			
 			// aapt resource value: 0x7F0D0030
-			public const int mtrl_chip_close_icon_content_description = 2131558448;
+			public const int label_proxy_server = 2131558448;
 			
 			// aapt resource value: 0x7F0D0031
-			public const int notification_channel_name = 2131558449;
+			public const int mtrl_chip_close_icon_content_description = 2131558449;
 			
 			// aapt resource value: 0x7F0D0032
-			public const int password_toggle_content_description = 2131558450;
+			public const int notification_channel_name = 2131558450;
 			
 			// aapt resource value: 0x7F0D0033
-			public const int path_password_eye = 2131558451;
+			public const int password_toggle_content_description = 2131558451;
 			
 			// aapt resource value: 0x7F0D0034
-			public const int path_password_eye_mask_strike_through = 2131558452;
+			public const int path_password_eye = 2131558452;
 			
 			// aapt resource value: 0x7F0D0035
-			public const int path_password_eye_mask_visible = 2131558453;
+			public const int path_password_eye_mask_strike_through = 2131558453;
 			
 			// aapt resource value: 0x7F0D0036
-			public const int path_password_strike_through = 2131558454;
+			public const int path_password_eye_mask_visible = 2131558454;
 			
 			// aapt resource value: 0x7F0D0037
-			public const int proxy_notification_title = 2131558455;
+			public const int path_password_strike_through = 2131558455;
 			
 			// aapt resource value: 0x7F0D0038
-			public const int search_menu_title = 2131558456;
+			public const int proxy_notification_title = 2131558456;
 			
 			// aapt resource value: 0x7F0D0039
-			public const int start_proxy = 2131558457;
+			public const int search_menu_title = 2131558457;
 			
 			// aapt resource value: 0x7F0D003A
-			public const int status_bar_notification_info_overflow = 2131558458;
+			public const int server_required = 2131558458;
 			
 			// aapt resource value: 0x7F0D003B
-			public const int stop_proxy = 2131558459;
+			public const int start_proxy = 2131558459;
+			
+			// aapt resource value: 0x7F0D003C
+			public const int status_bar_notification_info_overflow = 2131558460;
+			
+			// aapt resource value: 0x7F0D003D
+			public const int stop_proxy = 2131558461;
 			
 			static String()
 			{
