@@ -9,6 +9,8 @@ using System.IO;
 using Xamarin.Essentials;
 using YouNewAll;
 using System.Security.Cryptography.X509Certificates;
+using Android.Support.V7.Widget;
+using System.Security.Cryptography;
 
 namespace YouNew.AndroidApp
 {
@@ -18,24 +20,21 @@ namespace YouNew.AndroidApp
         MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        private const int SelectCertificateRequestCode = 1;
         private Button _startButton;
         private Button _stopButton;
         private EditText _txtServer;
         private EditText _txtThumbprint;
-        private EditText _txtCertPwd;
-
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             CreateNotificationChannel();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
-            CheckCertificate();
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            _txtCertPwd = FindViewById<EditText>(Resource.Id.txtCertPwd);
-            _txtCertPwd.FocusChange += TxtCertPwdFocusChange;
             _txtServer = FindViewById<EditText>(Resource.Id.txtServer);
             _txtServer.Text = Xamarin.Essentials.Preferences.Get(Constants.ServerSettingKey, string.Empty);
             _startButton = FindViewById<Button>(Resource.Id.startProxy);
@@ -45,10 +44,11 @@ namespace YouNew.AndroidApp
 
             var _selectCertButton = FindViewById<Button>(Resource.Id.selectCertificate);
             _selectCertButton.Click += OnSelectCertButtonClicked;
+            
+            CheckCertificate();
+            
             var isRunning = IsLocalProxyRunning();
             SetIsServiceRunning(isRunning);
-
-            SetThumbprint();
         }
 
         private void CheckCertificate()
@@ -64,6 +64,10 @@ namespace YouNew.AndroidApp
                     .Create()
                     .Show();
             }
+            else
+            {
+                ShowThumbprint();
+            }
         }
 
         private string GetCertificatePath()
@@ -71,24 +75,22 @@ namespace YouNew.AndroidApp
             return Path.Combine(FileSystem.AppDataDirectory, Constants.LocalCertificateFile);
         }
 
-        private void TxtCertPwdFocusChange(object sender, Android.Views.View.FocusChangeEventArgs e)
+        private void ShowThumbprint()
         {
-            if (!e.HasFocus)
+            try
             {
-                Xamarin.Essentials.Preferences.Set(Constants.CertPasswordKey, _txtCertPwd.Text ?? string.Empty);
-                SetThumbprint();
+                var pwd = Xamarin.Essentials.Preferences.Get(Constants.CertPasswordKey, string.Empty);
+                var pfxFile = GetCertificatePath();
+                var cert = new X509Certificate2(pfxFile, pwd);
+
+                _txtThumbprint = FindViewById<EditText>(Resource.Id.txtThumbprint);
+                _txtThumbprint.Text = cert.Thumbprint;
             }
-        }
-
-        private void SetThumbprint()
-        {
-            var pwd = Xamarin.Essentials.Preferences.Get(Constants.CertPasswordKey, string.Empty);
-            var pfxFile = Path.Combine(FileSystem.AppDataDirectory, "local.pfx");
-
-            var cert = File.Exists(pfxFile) ? new X509Certificate2(pfxFile, pwd) : null;
-
-            _txtThumbprint = FindViewById<EditText>(Resource.Id.txtThumbprint);
-            _txtThumbprint.Text = cert?.Thumbprint ?? string.Empty;
+            catch(CryptographicException)
+            {
+                Toast.MakeText(this, Resource.String.invalid_pwd_message, ToastLength.Short).Show();
+                ShowSetPasswordDialog();
+            }
         }
 
         private void OnSelectCertButtonClicked(object sender, EventArgs e)
@@ -103,14 +105,14 @@ namespace YouNew.AndroidApp
                 .SetAction(Intent.ActionGetContent);
             var title = Resources.GetString(Resource.String.select_certificate);
 
-            StartActivityForResult(Intent.CreateChooser(intent, title), 1);
+            StartActivityForResult(Intent.CreateChooser(intent, title), SelectCertificateRequestCode);
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == 1)
+            if (requestCode == SelectCertificateRequestCode)
             {
                 var pfxFile = GetCertificatePath();
 
@@ -124,6 +126,8 @@ namespace YouNew.AndroidApp
                     using var fileStream = ContentResolver.OpenInputStream(data.Data);
                     using var localStream = File.OpenWrite(pfxFile);
                     fileStream.CopyTo(localStream);
+
+                    ShowSetPasswordDialog();
                 }
                 else
                 {
@@ -133,6 +137,40 @@ namespace YouNew.AndroidApp
                     }
                 }
             }
+        }
+
+        private void ShowSetPasswordDialog()
+        {
+            var view = LayoutInflater.Inflate(Resource.Layout.set_password, null);            
+            var dlg = new Android.App.AlertDialog.Builder(this)
+                .SetView(view)
+                .SetPositiveButton(Resource.String.dlg_ok, default(IDialogInterfaceOnClickListener))
+                .SetNegativeButton(Resource.String.dlg_cancel, default(IDialogInterfaceOnClickListener))
+                .Create();
+            
+            dlg.ShowEvent += (s, e) =>
+            {
+                dlg.GetButton((int)DialogButtonType.Positive).Click += (s, e) =>
+                {
+                    try
+                    {
+                        var txtCertPwd = dlg.FindViewById<EditText>(Resource.Id.txtCertPwd);
+                        var pwd = txtCertPwd.Text ?? string.Empty;
+                        var pfxFile = GetCertificatePath();
+                        var cert = new X509Certificate2(pfxFile, pwd);                        
+                        Xamarin.Essentials.Preferences.Set(Constants.CertPasswordKey, pwd);
+                        dlg.Dismiss();
+
+                        ShowThumbprint();
+                    }
+                    catch(CryptographicException)
+                    {
+                        Toast.MakeText(this, Resource.String.invalid_pwd_message, ToastLength.Short).Show();
+                    }
+                };
+            };
+
+            dlg.Show();
         }
 
         private void SetIsServiceRunning(bool isRunning)

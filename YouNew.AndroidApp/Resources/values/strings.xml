@@ -5,6 +5,7 @@
     <string name="stop_proxy">Stop Proxy</string>
     <string name="select_certificate">Select a Certificate</string>
     <string name="label_cert_pwd">Input password</string>
+    <string name="invalid_pwd_message">Invalid password</string>
     <string name="label_proxy_server">Input Server Name</string>
     <string name="server_required">Server Required</string>
     <string name="certificate_required">Certificate not found</string>
@@ -14,4 +15,6 @@
     <string name="need_cert_message">A certificate is needed, select one now?</string>
     <string name="dlg_yes">YES</string>
     <string name="dlg_no">NO</string>
+    <string name="dlg_ok">OK</string>
+    <string name="dlg_cancel">Cancel</string>
 </resources>

@@ -23,14 +23,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:height="100px"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:height="150px"
-        android:textAlignment="center"
-        android:layout_marginHorizontal="10px"
-        android:hint="@string/label_cert_pwd"
-        android:id="@+id/txtCertPwd"/>
+    
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
