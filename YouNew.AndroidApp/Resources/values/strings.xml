@@ -11,4 +11,7 @@
     <string name="label_thumbprint">Ensure the thumbprint is allowed by server</string>
     <string name="notification_channel_name">General</string>
     <string name="proxy_notification_title">Http Proxy Is Running</string>
+    <string name="need_cert_message">A certificate is needed, select one now?</string>
+    <string name="dlg_yes">YES</string>
+    <string name="dlg_no">NO</string>
 </resources>

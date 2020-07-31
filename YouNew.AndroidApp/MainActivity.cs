@@ -29,6 +29,8 @@ namespace YouNew.AndroidApp
             CreateNotificationChannel();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
+            CheckCertificate();
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
@@ -49,9 +51,29 @@ namespace YouNew.AndroidApp
             SetThumbprint();
         }
 
+        private void CheckCertificate()
+        {
+            var pfxFile = GetCertificatePath();
+
+            if (!File.Exists(pfxFile))
+            {
+                new Android.App.AlertDialog.Builder(this)
+                    .SetMessage(Resource.String.need_cert_message)
+                    .SetPositiveButton(Resource.String.dlg_yes, (s, e) => SelectCertificate())
+                    .SetNegativeButton(Resource.String.dlg_no, (s, e) => FinishAffinity())
+                    .Create()
+                    .Show();
+            }
+        }
+
+        private string GetCertificatePath()
+        {
+            return Path.Combine(FileSystem.AppDataDirectory, Constants.LocalCertificateFile);
+        }
+
         private void TxtCertPwdFocusChange(object sender, Android.Views.View.FocusChangeEventArgs e)
         {
-            if(!e.HasFocus)
+            if (!e.HasFocus)
             {
                 Xamarin.Essentials.Preferences.Set(Constants.CertPasswordKey, _txtCertPwd.Text ?? string.Empty);
                 SetThumbprint();
@@ -71,6 +93,11 @@ namespace YouNew.AndroidApp
 
         private void OnSelectCertButtonClicked(object sender, EventArgs e)
         {
+            SelectCertificate();
+        }
+
+        private void SelectCertificate()
+        {
             var intent = new Intent()
                 .SetType("*/*")
                 .SetAction(Intent.ActionGetContent);
@@ -85,11 +112,11 @@ namespace YouNew.AndroidApp
 
             if (requestCode == 1)
             {
+                var pfxFile = GetCertificatePath();
+
                 if (resultCode == Result.Ok)
                 {
-                    var pfxFile = Path.Combine(FileSystem.AppDataDirectory, "local.pfx");
-
-                    if(File.Exists(pfxFile))
+                    if (File.Exists(pfxFile))
                     {
                         File.Delete(pfxFile);
                     }
@@ -97,6 +124,13 @@ namespace YouNew.AndroidApp
                     using var fileStream = ContentResolver.OpenInputStream(data.Data);
                     using var localStream = File.OpenWrite(pfxFile);
                     fileStream.CopyTo(localStream);
+                }
+                else
+                {
+                    if (!File.Exists(pfxFile))
+                    {
+                        CheckCertificate();
+                    }
                 }
             }
         }

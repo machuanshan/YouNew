@@ -20,5 +20,6 @@ namespace YouNew.AndroidApp
         public const string LocalProxyServiceName = "YouNew.LocalProxy";
         public const string ServerSettingKey = "server";
         public const string CertPasswordKey = "keyPassword";
+        public const string LocalCertificateFile = "local.pfx";
     }
 }
