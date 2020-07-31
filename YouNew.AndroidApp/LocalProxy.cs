@@ -22,6 +22,7 @@ namespace YouNew.AndroidApp
         public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;
 
         private X509Certificate2 _clientCertificate;
+        private readonly CancellationTokenSource _stoppingCTS = new CancellationTokenSource();
         
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
@@ -44,9 +45,16 @@ namespace YouNew.AndroidApp
 
                 // Enlist this instance of the service as a foreground service
                 StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
+                _ = ExecuteAsync(_stoppingCTS.Token);
             }
 
             return base.OnStartCommand(intent, flags, startId);
+        }
+
+        public override void OnDestroy()
+        {
+            _stoppingCTS.Cancel();
+            base.OnDestroy();
         }
 
         private Notification.Action BuildStopServiceAction()
@@ -76,7 +84,7 @@ namespace YouNew.AndroidApp
             try
             {
                 var pwd = Preferences.Get(Constants.CertPasswordKey, string.Empty);
-                var pfxFile = Path.Combine(FileSystem.AppDataDirectory, "local.pfx");
+                var pfxFile = Path.Combine(FileSystem.AppDataDirectory, Constants.LocalCertificateFile);
 
                 if (!File.Exists(pfxFile))
                 {
