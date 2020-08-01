@@ -11,6 +11,9 @@ using YouNewAll;
 using System.Security.Cryptography.X509Certificates;
 using Android.Support.V7.Widget;
 using System.Security.Cryptography;
+using Android.Support.V4.Content;
+using Android.Net.Wifi;
+using System.Linq;
 
 namespace YouNew.AndroidApp
 {
@@ -29,6 +32,7 @@ namespace YouNew.AndroidApp
         protected override void OnCreate(Bundle savedInstanceState)
         {
             CreateNotificationChannel();
+
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
@@ -210,15 +214,7 @@ namespace YouNew.AndroidApp
             var intent = new Intent(this, typeof(LocalProxy));
             intent.PutExtra(Constants.ServiceAction, Constants.StopService);
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                StartForegroundService(intent);
-            }
-            else
-            {
-                StartService(intent);
-            }
-
+            ContextCompat.StartForegroundService(this, intent);
             SetIsServiceRunning(false);
         }
 
@@ -236,25 +232,16 @@ namespace YouNew.AndroidApp
                 return;
             }
 
-            Xamarin.Essentials.Preferences.Set(Constants.ServerSettingKey, _txtServer.Text.Trim());
+            Preferences.Set(Constants.ServerSettingKey, _txtServer.Text.Trim());
 
             var intent = new Intent(this, typeof(LocalProxy));
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                StartForegroundService(intent);
-            }
-            else
-            {
-                StartService(intent);
-            }
-
+            ContextCompat.StartForegroundService(this, intent);
             SetIsServiceRunning(true);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

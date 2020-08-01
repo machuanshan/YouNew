@@ -2,8 +2,8 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.App;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -16,25 +16,26 @@ using YouNewAll;
 
 namespace YouNew.AndroidApp
 {
-    [Service(Name = Constants.LocalProxyServiceName)]
+    [Service(Name = Constants.LocalProxyServiceName, Enabled = true)]
     internal class LocalProxy : Service
     {
-        public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;
+        public const int SERVICE_RUNNING_NOTIFICATION_ID = 1;
 
         private X509Certificate2 _clientCertificate;
         private readonly CancellationTokenSource _stoppingCTS = new CancellationTokenSource();
-        
+
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
             if (intent.GetStringExtra(Constants.ServiceAction) == Constants.StopService)
             {
+                _stoppingCTS.Cancel();
                 StopForeground(true);
                 StopSelf(SERVICE_RUNNING_NOTIFICATION_ID);
+                return StartCommandResult.NotSticky;
             }
-            else
-            {
-                var notification = new Notification.Builder(this, Constants.NotificationChannelId)
+
+            var notification = new NotificationCompat.Builder(this, Constants.NotificationChannelId)
                     .SetContentTitle(Resources.GetString(Resource.String.proxy_notification_title))
                     .SetSmallIcon(Resource.Drawable.ic_noti)
                     .SetContentIntent(BuildIntentToShowMainActivity())
@@ -43,12 +44,12 @@ namespace YouNew.AndroidApp
                     .AddAction(BuildStopServiceAction())
                     .Build();
 
-                // Enlist this instance of the service as a foreground service
-                StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
-                _ = ExecuteAsync(_stoppingCTS.Token);
-            }
+            // Enlist this instance of the service as a foreground service
+            StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
+            _ = ExecuteAsync(_stoppingCTS.Token);
 
-            return base.OnStartCommand(intent, flags, startId);
+            // in case if android stops our service forcefully, then don't restart, until user restarts it.
+            return StartCommandResult.RedeliverIntent;
         }
 
         public override void OnDestroy()
@@ -57,7 +58,7 @@ namespace YouNew.AndroidApp
             base.OnDestroy();
         }
 
-        private Notification.Action BuildStopServiceAction()
+        private NotificationCompat.Action BuildStopServiceAction()
         {
             var intent = new Intent(this, GetType());
             intent.PutExtra(Constants.ServiceAction, Constants.StopService);
@@ -65,8 +66,8 @@ namespace YouNew.AndroidApp
             // PendingIntent is for notification system to use the inner Intent object on behalf of owner application of the Intent
             // this pendingIntent object can only be used once, so we set it with OneShot flag
             var pendingIntent = PendingIntent.GetForegroundService(this, 0, intent, PendingIntentFlags.OneShot);
-            
-            return new Notification.Action(Resource.Drawable.ic_stop_proxy, Resources.GetString(Resource.String.stop_proxy), pendingIntent);
+
+            return new NotificationCompat.Action(Resource.Drawable.ic_stop_proxy, Resources.GetString(Resource.String.stop_proxy), pendingIntent);
         }
 
         private PendingIntent BuildIntentToShowMainActivity()
@@ -92,7 +93,7 @@ namespace YouNew.AndroidApp
                 }
 
                 _clientCertificate = new X509Certificate2(pfxFile, pwd);
-                
+
                 var port = Preferences.Get("localPort", 5000);
                 var localServer = new TcpListener(IPAddress.Any, port);
                 localServer.Start();
@@ -104,7 +105,7 @@ namespace YouNew.AndroidApp
                     ProcessClientRequest(client);
                 }
             }
-            catch(ObjectDisposedException)
+            catch (ObjectDisposedException)
             {
                 //_logger.LogInformation("Server stopped");
             }
@@ -114,9 +115,15 @@ namespace YouNew.AndroidApp
             }
         }
 
+        public override void OnTaskRemoved(Intent rootIntent)
+        {
+            _stoppingCTS.Cancel();
+            base.OnTaskRemoved(rootIntent);
+        }
+
         public override IBinder OnBind(Intent intent)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         private async void ProcessClientRequest(TcpClient client1)
@@ -159,7 +166,7 @@ namespace YouNew.AndroidApp
         private bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             var cert2 = certificate as X509Certificate2;
-            
+
             if (sslPolicyErrors == SslPolicyErrors.RemoteCertificateChainErrors)
             {
                 foreach (var s in chain.ChainStatus)
