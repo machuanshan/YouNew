@@ -25,7 +25,7 @@ namespace YouNewKeyGen
                 parameters.Add(args[2], args[3]);
                 parameters.Add(args[4], args[5]);
 
-                CertificateUtils.CreateSelfSignedCertificate(parameters["-n"], parameters["-o"], parameters["-p"]);
+                CertificateUtils.CreateSelfSignedCertificate(parameters["-n"], parameters["-p"], parameters["-o"]);
                 Console.WriteLine("Certificate is generated successfully");
             }
             catch(Exception e)
