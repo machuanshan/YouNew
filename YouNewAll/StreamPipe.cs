@@ -8,7 +8,7 @@ namespace YouNewAll
     public static class StreamPipe
     {
         private const int MinBufferSize = 1024;
-        private const int MaxBufferSize = 1024 * 1024 * 2;
+        private const int MaxBufferSize = 1024 * 1024;
 
         private static async Task Pipe(Stream source, Stream target)
         {
