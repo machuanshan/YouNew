@@ -7,14 +7,13 @@ trigger:
 - master
 
 variables:
-- name: version
-  value: 1.1.1.0
+  configuration: release
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo $(version)
+- script: echo $(configuration)
   displayName: 'print variable'
 
 - script: |
