@@ -13,6 +13,13 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      write-host 'my inline powershell'
+      pwd
 - script: echo $(configuration)
   displayName: 'print variable'
 
