@@ -6,11 +6,15 @@
 trigger:
 - master
 
+variables:
+- name: version
+  value: 1.1.1.0
+
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
+- script: echo $(one)
   displayName: 'Run a one-line script'
 
 - script: |
