@@ -14,8 +14,8 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo $(one)
-  displayName: 'Run a one-line script'
+- script: echo $(version)
+  displayName: 'print variable'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
