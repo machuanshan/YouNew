@@ -16,6 +16,9 @@ steps:
 - script: echo $(configuration)
   displayName: 'print variable'
 
+- script: echo $(Build.BuildNumber)
+  displayName: 'print build number'
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
