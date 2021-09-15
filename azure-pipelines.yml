@@ -3,6 +3,11 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+- name: configs
+  type: string
+  default: 'x86,x64'
+  
 trigger:
 - master
 
