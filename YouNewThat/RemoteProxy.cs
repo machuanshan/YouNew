@@ -43,6 +43,7 @@ namespace YouNewThat
                     new X509Certificate2(pfxName, pwd) :
                     CertificateUtils.CreateSelfSignedCertificate(Environment.MachineName, pwd, pfxName);
 
+                _logger.LogInformation($"Use server certificate: {_serverCertificate.Thumbprint}");
                 var port = _configuration.GetValue("port", 5001);
                 var server = new TcpListener(IPAddress.Any, port);
                 server.Start();

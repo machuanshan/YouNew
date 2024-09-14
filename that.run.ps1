@@ -1,0 +1,1 @@
+docker run -p 5001:443 -v $(PWD)/server.pfx:/app/server.pfx -v $(PWD)/appsettings.json:/app/appsettings.json -d --name younewthat machuanshan/younewthat:1.0

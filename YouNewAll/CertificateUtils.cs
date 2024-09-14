@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -30,7 +31,11 @@ namespace YouNewAll
             request.CertificateExtensions.Add(sanBuilder.Build());
 
             var certificate = request.CreateSelfSigned(new DateTimeOffset(DateTime.UtcNow.AddDays(-1)), new DateTimeOffset(DateTime.UtcNow.AddYears(20)));
-            certificate.FriendlyName = subjectName;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                certificate.FriendlyName = subjectName;
+            }
 
             var data = certificate.Export(X509ContentType.Pfx, password);
             File.WriteAllBytes(pfxName, data);
