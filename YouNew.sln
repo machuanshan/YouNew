@@ -15,11 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouNewKeyGen", "YouNewKeyGe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{209A6ECB-6B5E-4067-954E-D846AFB70571}"
 	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
 		publish.ps1 = publish.ps1
 		that.dockerfile = that.dockerfile
 		that.pub.ps1 = that.pub.ps1
 		that.push.ps1 = that.push.ps1
 		that.run.ps1 = that.run.ps1
+		that.up-compose.ps1 = that.up-compose.ps1
 	EndProjectSection
 EndProject
 Global

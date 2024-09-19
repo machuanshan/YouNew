@@ -1,0 +1,11 @@
+services:
+  younew:
+    container_name: cn_younew
+    image: machuanshan/younewthat:1.0
+    environment:
+      port: "443"
+    ports:
+      - "443:443"
+    # volumes:
+    #   - $(PWD)/server.pfx:/app/server.pfx
+    #   - $(PWD)/appsettings.json:/app/appsettings.json
