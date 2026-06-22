@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using YouNewAll;
 using YouNewThat;
@@ -15,7 +16,10 @@ namespace YouNewThis
                 {
                     sc.AddSingleton<Metrics>();
                     sc.AddHostedService<LocalProxy>();
-                    sc.AddHostedService<SetWindowsProxy>();
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        sc.AddHostedService<SetWindowsProxy>();
+                    }
                 })
                 .RunConsoleAsync();
         }

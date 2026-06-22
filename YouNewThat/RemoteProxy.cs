@@ -40,7 +40,7 @@ namespace YouNewThat
                 var pwd = _configuration.GetValue<string>("keyPassword") ?? string.Empty;
                 var pfxName = "server.pfx";
                 _serverCertificate = File.Exists(pfxName) ?
-                    new X509Certificate2(pfxName, pwd) :
+                    X509CertificateLoader.LoadPkcs12FromFile(pfxName, pwd) :
                     CertificateUtils.CreateSelfSignedCertificate(Environment.MachineName, pwd, pfxName);
 
                 var port = _configuration.GetValue("port", 5001);

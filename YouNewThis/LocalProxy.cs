@@ -45,7 +45,7 @@ namespace YouNewThis
                     return;
                 }
 
-                _clientCertificate = new X509Certificate2(pfxFile, pwd);
+                _clientCertificate = X509CertificateLoader.LoadPkcs12FromFile(pfxFile, pwd);
                 _logger.LogInformation($"Client certificate thumbprint: {_clientCertificate.Thumbprint}");
 
                 var port = _configuration.GetValue("localPort", 5000);

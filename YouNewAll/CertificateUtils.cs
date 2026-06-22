@@ -30,7 +30,7 @@ namespace YouNewAll
             request.CertificateExtensions.Add(sanBuilder.Build());
 
             var certificate = request.CreateSelfSigned(new DateTimeOffset(DateTime.UtcNow.AddDays(-1)), new DateTimeOffset(DateTime.UtcNow.AddYears(20)));
-            certificate.FriendlyName = subjectName;
+            //certificate.FriendlyName = subjectName;
 
             var data = certificate.Export(X509ContentType.Pfx, password);
             File.WriteAllBytes(pfxName, data);

@@ -10,13 +10,10 @@ namespace YouNewThat
     {
         static async Task Main(string[] args)
         {
-            await Host.CreateDefaultBuilder(args)
-                .ConfigureServices(sc =>
-                {
-                    sc.AddSingleton<Metrics>();
-                    sc.AddHostedService<RemoteProxy>();
-                })
-                .RunConsoleAsync();
+            var builder = Host.CreateApplicationBuilder(args);
+            builder.Services.AddSingleton<Metrics>();
+            builder.Services.AddHostedService<RemoteProxy>();
+            await builder.Build().RunAsync();
         }
     }
 }
